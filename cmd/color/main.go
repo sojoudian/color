@@ -31,7 +31,7 @@ const maxHeaderBytes = 16 << 10 // plenty for a demo app; bounds per-conn memory
 var version = "dev"
 
 const (
-	defaultPort       = "8080"
+	defaultPort       = "80"
 	shutdownTimeout   = 10 * time.Second
 	readHeaderTimeout = 5 * time.Second
 	readTimeout       = 10 * time.Second

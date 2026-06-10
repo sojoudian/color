@@ -19,10 +19,9 @@ spec:
     spec:
       # The app gets its namespace via the Downward API, so no token mount.
       automountServiceAccountToken: false
+      # Runs as root so the server can bind port 80 (drop-in compatible
+      # with jpetazzo/color); all other hardening is kept.
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 65532
-        runAsGroup: 65532
         seccompProfile:
           type: RuntimeDefault
       # Spread replicas across nodes so load-balancing demos hit every node.
@@ -43,7 +42,7 @@ spec:
           image: ghcr.io/sojoudian/color:latest
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
           env:
             - name: NAMESPACE
               valueFrom:
@@ -87,3 +86,6 @@ spec:
             capabilities:
               drop:
                 - ALL
+              add:
+                # Required to bind port 80.
+                - NET_BIND_SERVICE

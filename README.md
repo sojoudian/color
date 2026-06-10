@@ -19,26 +19,26 @@ keeping the same page format and behavior.
 ## Run it
 
 ```bash
-# Kubernetes — one deployment, imperative:
+# Kubernetes — one deployment, imperative (image also on Docker Hub as maziar/color):
 kubectl create deployment blue --image=ghcr.io/sojoudian/color
-kubectl expose deployment blue --port=80 --target-port=8080
+kubectl expose deployment blue --port=80
 
 # Kubernetes — blue/green via kustomize:
 kubectl apply -k k8s/overlays/blue
 kubectl apply -k k8s/overlays/green
 
 # Docker:
-docker run --rm -p 8080:8080 ghcr.io/sojoudian/color
+docker run --rm -p 8080:80 ghcr.io/sojoudian/color
 
-# Locally:
-go run ./cmd/color
+# Locally (binds :80, so use sudo or set PORT):
+PORT=8080 go run ./cmd/color
 ```
 
 ## Configuration
 
 | Variable    | Default | Purpose                                            |
 |-------------|---------|----------------------------------------------------|
-| `PORT`      | `8080`  | Listen port (unprivileged, works as non-root)      |
+| `PORT`      | `80`    | Listen port (same default as jpetazzo/color)       |
 | `HOSTNAME`  | —       | Overrides the pod hostname (and hence the color)   |
 | `NAMESPACE` | —       | Overrides the namespace (Downward API sets this; falls back to the service account mount) |
 

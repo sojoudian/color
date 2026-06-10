@@ -23,9 +23,10 @@ RUN --mount=type=cache,target=/go/pkg/mod \
     go build -trimpath -ldflags="-s -w -X main.version=${VERSION}" \
     -o /out/color ./cmd/color
 
-# distroless static: ~2 MiB, no shell, ca-certificates + tzdata + nonroot
-# user (65532) included. debian13 — the debian12 line is EOL September 2026.
-FROM gcr.io/distroless/static-debian13:nonroot@sha256:963fa6c544fe5ce420f1f54fb88b6fb01479f054c8056d0f74cc2c6000df5240
+# distroless static: ~2 MiB, no shell, ca-certificates + tzdata included.
+# Root variant: the server binds port 80 for drop-in compatibility with
+# jpetazzo/color. debian13 — the debian12 line is EOL September 2026.
+FROM gcr.io/distroless/static-debian13@sha256:3592aa8171c77482f62bbc4164e6a2d141c6122554ace66e5cc910cadb961ff0
 
 LABEL org.opencontainers.image.title="color" \
       org.opencontainers.image.description="Tiny web server for colorful Kubernetes demos: page color comes from the Deployment name" \
@@ -34,9 +35,8 @@ LABEL org.opencontainers.image.title="color" \
 
 COPY --from=build /out/color /color
 
-ENV PORT=8080
-EXPOSE 8080
-USER nonroot:nonroot
+ENV PORT=80
+EXPOSE 80
 
 # Exec-form healthcheck for plain `docker run` users; Kubernetes ignores
 # this and uses the /healthz and /readyz probes instead.

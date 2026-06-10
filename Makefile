@@ -15,8 +15,8 @@ all: fmt vet lint test build
 build: ## Build the release binary into ./bin
 	CGO_ENABLED=0 go build -trimpath -ldflags '$(LDFLAGS)' -o bin/$(BINARY) ./cmd/$(BINARY)
 
-run: ## Run locally on :8080
-	go run ./cmd/$(BINARY)
+run: ## Run locally on :8080 (the in-container default is :80)
+	PORT=8080 go run ./cmd/$(BINARY)
 
 test: ## Run tests with the race detector and coverage
 	go test -race -shuffle=on -coverprofile=coverage.out ./...
@@ -40,8 +40,8 @@ vuln: ## Scan for known vulnerabilities
 docker: ## Build the container image for the host platform
 	docker build -t $(IMAGE):dev --build-arg VERSION=$(VERSION) .
 
-docker-run: docker ## Run the container on :8080
-	docker run --rm -p 8080:8080 $(IMAGE):dev
+docker-run: docker ## Run the container on localhost:8080
+	docker run --rm -p 8080:80 $(IMAGE):dev
 
 clean:
 	rm -rf bin coverage.out coverage.html
