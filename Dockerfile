@@ -3,7 +3,7 @@
 # Build stage runs on the builder's native platform and cross-compiles for
 # the target, so multi-arch builds never need QEMU emulation.
 # Digest-pinned (Dependabot keeps it fresh); tag kept for humans.
-FROM --platform=$BUILDPLATFORM golang:1.26.4-alpine@sha256:f23e8b227fb4493eabe03bede4d5a32d04092da71962f1fb79b5f7d1e6c2a17f AS build
+FROM --platform=$BUILDPLATFORM golang:1.26.4-alpine@sha256:bd14630652464086289693533d25b791aa9ae7481e784d7eac5d4c948e9736ea AS build
 WORKDIR /src
 
 COPY go.* ./
