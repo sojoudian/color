@@ -1,0 +1,19 @@
+# Binaries
+/color
+/bin/
+/dist/
+
+# Test and coverage artifacts
+*.test
+*.out
+coverage.html
+
+# Go workspace files (local-only)
+go.work
+go.work.sum
+
+# Editor/OS noise
+.DS_Store
+.idea/
+.vscode/
+*.swp

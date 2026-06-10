@@ -1,0 +1,6 @@
+# Keep the build context minimal: only Go sources and module files matter.
+*
+!go.mod
+!go.sum
+!cmd/
+!internal/
